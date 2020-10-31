@@ -24,14 +24,13 @@ library("readxl")
 #Initialising libraries - End#
 
 #Setting up working directory & Picking the datasets - Start#
-setwd("D:/GLIM/Terms folder/Term-2/Business Analytics/Final Project/Final") #Setting up the working directory
+setwd("D:/GLIM/Terms folder/Term-2/Business Analytics/Final Project/Final/Section-B_Group-3") #Setting up the working directory
 italy.master <- read_excel("Section-B_Group-3.xlsx", sheet = "Italy") #Code starts from line#37 and ends at line#142
 sweden.master <- read_excel("Section-B_Group-3.xlsx", sheet = "Sweden") #Code starts from line#145 and ends at line#250
 USA.master <- read_excel("Section-B_Group-3.xlsx", sheet = "USA_California") #Code starts from line#253 and ends at line#358
 nz.master <- read_excel("Section-B_Group-3.xlsx", sheet = "New Zealand") #Code starts from line#360 and ends at line#473
 Australia.master <- read_excel("Section-B_Group-3.xlsx", sheet = "Australia") #Code starts from line#475 and ends at line#599
 india.master <- read_excel("Section-B_Group-3.xlsx", sheet = "India") #Code starts from line#601 and ends at line#725
-England.master <- read_excel("Section-B_Group-3.xlsx", sheet = "England") #Code starts from line#726 and ends at line#848
 #Setting up working directory & Picking the datasets - End#
 
 ###########################################################################
@@ -722,128 +721,3 @@ qplot(india.DT, india.CD,  colour = india.SI, data = india.master, geom = c("poi
 ###################################################################################
 ######################### Model for India - End ###################################
 ###################################################################################
-
-###################################################################################
-######################### Model for England - Start ###############################
-###################################################################################
-
-#Assigning variables - Start#
-England.SI  <- England.master$StringencyIndex
-England.RI  <- England.master$RateOfInfection
-England.NC  <- England.master$NewCases
-England.LNC <- log(England.NC)
-England.CC  <- England.master$ConfirmedCases
-England.LCC <- log(England.CC)
-England.DT  <- England.master$Actual_Date
-England.CD  <- England.master$ConfirmedDeaths
-England.LCD <- log(England.CD)
-#Assigning variables - End#
-
-#Interpreting Mean Value - Start#
-mean(England.SI)
-mean(England.RI)
-sd(England.SI)
-#Interpreting Mean Value - End#
-
-#Normalization & Checking for normal distribution - Start#
-England.RI.norm <- rnorm(England.RI)
-hist(England.RI.norm)
-
-England.SI.norm <- rnorm(England.SI)
-hist(England.SI.norm)
-
-England.NC.norm <- rnorm(England.NC)
-hist(England.NC.norm)
-#Normalization & Checking for normal distribution - End#
-
-#Identifying relation between dates & New cases - Start#
-qplot(England.DT, England.NC, colour = England.SI, data=England.master, geom = c("point","line"))
-#Identifying relation between dates & New cases - End#
-
-#Train & test model for multi-linear regression - Start#
-set.seed(143)
-model.data <- sample(2, nrow(England.master), replace=TRUE, prob = c(0.7,0.3))
-
-#Splitting the data intro train & test - Start#
-train <- England.master[model.data==1,]
-test <- England.master[model.data==2,]
-#Splitting the data intro train & test - End#
-
-#Assigning variables - Start#
-England.C1 <- England.master$`C1_School closing`
-England.C2 <- England.master$`C2_Workplace closing`
-England.C3 <- England.master$`C3_Cancel public events`
-England.C4 <- England.master$`C4_Restrictions on gatherings`
-England.C5 <- England.master$`C5_Close public transport`
-England.C6 <- England.master$`C6_Stay at home requirements`
-England.C7 <- England.master$`C7_Restrictions on internal movement`
-England.C8 <- England.master$C8_International_travel_controls
-England.H1 <- England.master$`H1_Public information campaigns`
-
-England.C1.flag <- England.master$C1_Flag
-England.C2.flag <- England.master$C2_Flag
-England.C3.flag <- England.master$C3_Flag
-England.C4.flag <- England.master$C4_Flag
-England.C5.flag <- England.master$C5_Flag
-England.C6.flag <- England.master$C6_Flag
-England.C7.flag <- England.master$C7_Flag
-England.H1.flag <- England.master$H1_Flag
-#Assigning variables - End#
-
-#Checking the fit of the model - Start of iteration-1#
-Linear_1 <- England.master$StringencyIndex~England.C1+England.C2+England.C3+England.C4+England.C5+England.C6+England.C7+
-  England.C8+England.H1+England.C1.flag+England.C2.flag+England.C3.flag+England.C4.flag+England.C5.flag+
-  England.C6.flag+England.C7.flag+England.H1.flag
-OLS_1 <- lm(Linear_1, data = train)
-summary(OLS_1)
-#Checking the fit of the model - End of iteration-1#
-
-#Checking the fit of the model - Start of iteration-2#
-Linear_2 <- England.master$StringencyIndex~England.C1+England.C2+England.C3+England.C4+England.C5+England.C6+England.C7+
-  England.C8+England.H1+England.C1.flag+England.C4.flag+England.C6.flag
-OLS_2 <- lm(Linear_2, data = train)
-summary(OLS_2)
-vif(OLS_2)
-#Checking the fit of the model - End of iteration-2#
-
-#Checking the fit of the model - Start of iteration-3#
-Linear_3 <- England.master$StringencyIndex~England.C1+England.C2+England.C4+England.C5+England.C6+England.C7+
-  England.C8+England.H1+England.C1.flag+England.C4.flag+England.C6.flag
-OLS_3 <- lm(Linear_3, data = train)
-summary(OLS_3)
-vif(OLS_3)
-#Checking the fit of the model - End of iteration-3#
-
-#Checking the fit of the model - Start of iteration-4#
-Linear_4 <- England.master$StringencyIndex~England.C1+England.C7+
-  England.C8+England.H1+England.C1.flag+England.C4.flag+England.C6.flag
-OLS_4 <- lm(Linear_4, data = train)
-summary(OLS_4)
-vif(OLS_4)
-#Checking the fit of the model - End of iteration-4#
-
-#Finding the MSE value - Start#
-Pred <- predict(OLS_2,test)
-MSE <- mean((Pred-test$StringencyIndex)^2)
-MSE
-#Finding the MSE value - End#
-#Train & test model for multi-linear regression - End#
-
-#Visualizing the effect of lockdown (Stringency Index) on new cases - Start#
-qplot(England.DT, England.SI,  colour = England.SI, data = England.master, geom = c("point","line"))
-#Visualizing the effect of lockdown (Stringency Index) on new cases - End#
-
-#Visualizing the effect of lockdown (Stringency Index) on confirmed cases - Start#
-qplot(England.DT, England.LCC, colour = England.SI, data = England.master, geom = c("point","line"))
-qplot(England.DT, England.CC,  colour = England.SI, data = England.master, geom = c("point","line"))
-#Visualizing the effect of lockdown (Stringency Index) on confirmed cases - End#
-
-#Visualizing the effect of lockdown (Stringency Index) on confirmed deaths - Start#
-qplot(England.DT, England.LCD, colour = England.SI, data = England.master, geom = c("point","line"))
-qplot(England.DT, England.CD,  colour = England.SI, data = England.master, geom = c("point","line"))
-#Visualizing the effect of lockdown (Stringency Index) on confirmed deaths - End#
-
-###################################################################################
-######################### Model for England - End #################################
-###################################################################################
-
