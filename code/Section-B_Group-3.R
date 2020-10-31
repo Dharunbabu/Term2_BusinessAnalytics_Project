@@ -27,7 +27,7 @@ library("readxl")
 setwd("D:/GLIM/Terms folder/Term-2/Business Analytics/Final Project/Final") #Setting up the working directory
 italy.master <- read_excel("Section-B_Group-3.xlsx", sheet = "Italy") #Code starts from line#37 and ends at line#144
 sweden.master <- read_excel("Section-B_Group-3.xlsx", sheet = "Sweden") #Code starts from line#147 and ends at line#252
-England.master <- read_excel("Section-B_Group-3.xlsx", sheet = "USA_California") #Code starts from line#255 and ends at line#361
+USA.master <- read_excel("Section-B_Group-3.xlsx", sheet = "USA_California") #Code starts from line#255 and ends at line#361
 nz.master <- read_excel("Section-B_Group-3.xlsx", sheet = "New Zealand") #Code starts from line#363 and ends at line#477
 Australia.master <- read_excel("Section-B_Group-3.xlsx", sheet = "Australia") #Code starts from line#479 and ends at line#603
 india.master <- read_excel("Section-B_Group-3.xlsx", sheet = "India") #Code starts from line#605 and ends at line#710
