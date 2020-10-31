@@ -25,13 +25,13 @@ library("readxl")
 
 #Setting up working directory & Picking the datasets - Start#
 setwd("D:/GLIM/Terms folder/Term-2/Business Analytics/Final Project/Final") #Setting up the working directory
-italy.master <- read_excel("Section-B_Group-3.xlsx", sheet = "Italy") #Code starts from line#37 and ends at line#142
-sweden.master <- read_excel("Section-B_Group-3.xlsx", sheet = "Sweden") #Code starts from line#145 and ends at line#250
-USA.master <- read_excel("Section-B_Group-3.xlsx", sheet = "USA_California") #Code starts from line#253 and ends at line#358
-nz.master <- read_excel("Section-B_Group-3.xlsx", sheet = "New Zealand") #Code starts from line#360 and ends at line#473
-Australia.master <- read_excel("Section-B_Group-3.xlsx", sheet = "Australia") #Code starts from line#475 and ends at line#599
-india.master <- read_excel("Section-B_Group-3.xlsx", sheet = "India") #Code starts from line#601 and ends at line#725
-England.master <- read_excel("Section-B_Group-3.xlsx", sheet = "England") #Code starts from line#726 and ends at line#848
+italy.master <- read_excel("Section-B_Group-3.xlsx", sheet = "Italy") #Code starts from line#37 and ends at line#144
+sweden.master <- read_excel("Section-B_Group-3.xlsx", sheet = "Sweden") #Code starts from line#147 and ends at line#252
+England.master <- read_excel("Section-B_Group-3.xlsx", sheet = "USA_California") #Code starts from line#255 and ends at line#361
+nz.master <- read_excel("Section-B_Group-3.xlsx", sheet = "New Zealand") #Code starts from line#363 and ends at line#477
+Australia.master <- read_excel("Section-B_Group-3.xlsx", sheet = "Australia") #Code starts from line#479 and ends at line#603
+india.master <- read_excel("Section-B_Group-3.xlsx", sheet = "India") #Code starts from line#605 and ends at line#710
+England.master <- read_excel("Section-B_Group-3.xlsx", sheet = "England") #Code starts from line#712 and ends at line#818
 #Setting up working directory & Picking the datasets - End#
 
 ###########################################################################
@@ -110,7 +110,9 @@ summary(OLS_1)
 #Checking the fit of the model - End of iteration-1#
 
 #Checking the fit of the model - Start of iteration-2#
-Linear_2 <- italy.master$StringencyIndex~italy.C1+italy.C4+italy.C5+italy.C6+italy.C7+italy.C8+italy.C1.flag
+Linear_2 <- italy.master$StringencyIndex~italy.C2+italy.C4+italy.C7+
+  italy.C8+italy.C1.flag+italy.C5.flag+
+  italy.C6.flag+italy.H1.flag
 OLS_2 <- lm(Linear_2, data = train)
 summary(OLS_2)
 vif(OLS_2)
@@ -218,7 +220,7 @@ summary(OLS_1)
 #Checking the fit of the model - End of iteration-1#
 
 #Checking the fit of the model - Start of iteration-2#
-Linear_2 <- sweden.master$StringencyIndex~sweden.C1+sweden.C3+sweden.C4+sweden.C1.flag
+Linear_2 <- sweden.master$StringencyIndex~sweden.C1+sweden.C2+sweden.C1.flag+sweden.C4.flag
 OLS_2 <- lm(Linear_2, data = train)
 summary(OLS_2)
 vif(OLS_2)
@@ -323,10 +325,11 @@ Linear_1 <- USA.master$StringencyIndex~USA.C1+USA.C2+USA.C3+USA.C4+USA.C5+USA.C6
   USA.C6.flag+USA.C7.flag+USA.H1.flag
 OLS_1 <- lm(Linear_1, data = train)
 summary(OLS_1)
+
 #Checking the fit of the model - End of iteration-1#
 
 #Checking the fit of the model - Start of iteration-2#
-Linear_2 <- USA.master$StringencyIndex~USA.C7+USA.C8+USA.C1.flag+USA.C2.flag+USA.C4.flag+USA.C6.flag
+Linear_2 <- USA.master$StringencyIndex~USA.C7+USA.H1+USA.C3.flag+USA.C4.flag
 OLS_2 <- lm(Linear_2, data = train)
 summary(OLS_2)
 vif(OLS_2)
@@ -441,14 +444,15 @@ vif(OLS_2)
 #Checking the fit of the model - End of iteration-2#
 
 #Checking the fit of the model - Start of iteration-3#
-Linear_3 <- nz.master$StringencyIndex~nz.C4+nz.C5+nz.C8+nz.C3.flag
+Linear_3 <- nz.master$StringencyIndex~nz.C1+nz.C4+
+  nz.C8+nz.H1+nz.C2.flag
 OLS_3 <- lm(Linear_3, data = train)
 summary(OLS_3)
 vif(OLS_3)
 #Checking the fit of the model - End of iteration-3#
 
 #Finding the MSE value - Start#
-Pred <- predict(OLS_3,test)
+Pred <- predict(OLS_4,test)
 MSE <- mean((Pred-test$StringencyIndex)^2)
 MSE
 #Finding the MSE value - End#
@@ -548,8 +552,8 @@ summary(OLS_1)
 #Checking the fit of the model - End of iteration-1#
 
 #Checking the fit of the model - Start of iteration-2#
-Linear_2 <- Australia.master$StringencyIndex~Australia.C1+Australia.C2+Australia.C3+Australia.C4+Australia.C5+Australia.C6+Australia.C7+
-  Australia.C8+Australia.H1+Australia.C1.flag+Australia.C2.flag+Australia.C3.flag+Australia.C4.flag+
+Linear_2 <- Australia.master$StringencyIndex~Australia.C1+Australia.C2+Australia.C4+Australia.C5+Australia.C6+Australia.C7+
+  Australia.C8+Australia.H1+Australia.C2.flag+Australia.C4.flag+
   Australia.C6.flag+Australia.H1.flag
 OLS_2 <- lm(Linear_2, data = train)
 summary(OLS_2)
@@ -557,17 +561,17 @@ vif(OLS_2)
 #Checking the fit of the model - End of iteration-2#
 
 #Checking the fit of the model - Start of iteration-3#
-Linear_3 <- Australia.master$StringencyIndex~Australia.C1+Australia.C2+Australia.C3+Australia.C5+Australia.C6+Australia.C7+
-  Australia.C8+Australia.H1+Australia.C1.flag+Australia.C2.flag+Australia.C3.flag+Australia.C4.flag+
-  Australia.C6.flag+Australia.H1.flag
+Linear_3 <- Australia.master$StringencyIndex~Australia.C1+Australia.C5+
+  Australia.C8+Australia.H1+Australia.C2.flag+Australia.C4.flag+
+  Australia.C6.flag
 OLS_3 <- lm(Linear_3, data = train)
 summary(OLS_3)
 vif(OLS_3)
 #Checking the fit of the model - End of iteration-3#
 
 #Checking the fit of the model - Start of iteration-4#
-Linear_4 <- Australia.master$StringencyIndex~Australia.C7+
-  Australia.C8+Australia.C1.flag+Australia.C6.flag
+Linear_4 <- Australia.master$StringencyIndex~Australia.C1+Australia.C5+
+  Australia.C8+Australia.C2.flag+Australia.C4.flag+Australia.C6.flag
 OLS_4 <- lm(Linear_4, data = train)
 summary(OLS_4)
 vif(OLS_4)
@@ -674,29 +678,11 @@ summary(OLS_1)
 #Checking the fit of the model - End of iteration-1#
 
 #Checking the fit of the model - Start of iteration-2#
-Linear_2 <- india.master$StringencyIndex~india.C1+india.C2+india.C3+india.C4+india.C5+india.C6+
-  india.C8+india.H1+india.C1.flag+india.C2.flag+india.C3.flag+india.C4.flag+india.C5.flag+
-  india.C6.flag+india.C7.flag+india.H1.flag
+Linear_2 <- india.master$StringencyIndex~india.C1+india.C2+india.C5+india.C6+india.C2.flag+india.C3.flag+india.C4.flag
 OLS_2 <- lm(Linear_2, data = train)
 summary(OLS_2)
 vif(OLS_2)
 #Checking the fit of the model - End of iteration-2#
-
-#Checking the fit of the model - Start of iteration-3#
-Linear_3 <- india.master$StringencyIndex~india.C2+india.C3+india.C4+india.C5+india.C6+
-  india.C8+india.H1+india.C1.flag+india.C2.flag+india.C3.flag+india.C4.flag+india.C5.flag+
-  india.C6.flag+india.C7.flag+india.H1.flag
-OLS_3 <- lm(Linear_3, data = train)
-summary(OLS_3)
-vif(OLS_3)
-#Checking the fit of the model - End of iteration-3#
-
-#Checking the fit of the model - Start of iteration-4#
-Linear_4 <- india.master$StringencyIndex~india.C2+india.C6+india.C1.flag+india.C3.flag+india.C6.flag+india.C7.flag
-OLS_4 <- lm(Linear_4, data = train)
-summary(OLS_4)
-vif(OLS_4)
-#Checking the fit of the model - End of iteration-4#
 
 #Finding the MSE value - Start#
 Pred <- predict(OLS_2,test)
@@ -799,28 +785,12 @@ summary(OLS_1)
 #Checking the fit of the model - End of iteration-1#
 
 #Checking the fit of the model - Start of iteration-2#
-Linear_2 <- England.master$StringencyIndex~England.C1+England.C2+England.C3+England.C4+England.C5+England.C6+England.C7+
-  England.C8+England.H1+England.C1.flag+England.C4.flag+England.C6.flag
+Linear_2 <- England.master$StringencyIndex~England.C6+England.C7+
+  England.C8+England.H1+England.C1.flag+England.C2.flag+England.C4.flag
 OLS_2 <- lm(Linear_2, data = train)
 summary(OLS_2)
 vif(OLS_2)
 #Checking the fit of the model - End of iteration-2#
-
-#Checking the fit of the model - Start of iteration-3#
-Linear_3 <- England.master$StringencyIndex~England.C1+England.C2+England.C4+England.C5+England.C6+England.C7+
-  England.C8+England.H1+England.C1.flag+England.C4.flag+England.C6.flag
-OLS_3 <- lm(Linear_3, data = train)
-summary(OLS_3)
-vif(OLS_3)
-#Checking the fit of the model - End of iteration-3#
-
-#Checking the fit of the model - Start of iteration-4#
-Linear_4 <- England.master$StringencyIndex~England.C1+England.C7+
-  England.C8+England.H1+England.C1.flag+England.C4.flag+England.C6.flag
-OLS_4 <- lm(Linear_4, data = train)
-summary(OLS_4)
-vif(OLS_4)
-#Checking the fit of the model - End of iteration-4#
 
 #Finding the MSE value - Start#
 Pred <- predict(OLS_2,test)
@@ -846,4 +816,3 @@ qplot(England.DT, England.CD,  colour = England.SI, data = England.master, geom 
 ###################################################################################
 ######################### Model for England - End #################################
 ###################################################################################
-
